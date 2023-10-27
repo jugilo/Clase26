@@ -13,7 +13,7 @@ class registroController extends Controller
     public function index()
     {
         $registros = registro::all();
-        return $registros;
+        return view('home', ['datos' => $registros]);
     }
 
     /**
@@ -30,11 +30,11 @@ class registroController extends Controller
     public function store(Request $request)
     {
         $registro = new registro();
-        $registro->nombre = $request->nombre;
-        $registro->apellido = $request->apellido;
-        $registro->edad = $request->edad;
-        $registro->cantidadAcompanantes = $request->cantidadAcompanantes;
-        $registro->horaIngreso = Carbon::now();
+            $registro->nombre = $request->nombre;
+            $registro->apellido = $request->apellido;
+            $registro->edad = $request->edad;
+            $registro->cantidadAcompanantes = $request->cantidadAcompanantes;
+            $registro->horaIngreso = Carbon::now();
         $registro->save();
         return "Registro guardado correctamente";
 
