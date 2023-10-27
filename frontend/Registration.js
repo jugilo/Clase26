@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function Registration() {
   const [nombre, setNombre] = useState('');
@@ -7,14 +8,32 @@ export default function Registration() {
   const [edad, setEdad] = useState('');
   const [cantidadAcompanantes, setCantidadAcompanantes] = useState('');
 
-  const handleGuardar = () => {
-    axios.post('http://localhost:3000/registro', {
-    nombre: nombre,
-    apellido: apellido,
-    edad: edad,
-    cantidadAcompanantes: cantidadAcompanantes,
-  })
-}
+  const handleStore = async () => {
+    if (nombre && apellido && edad && cantidadAcompanantes) {
+      console.log(nombre, apellido, edad, cantidadAcompanantes);
+      try {
+        await axios.post('http://localhost:8000/api/registro', {
+          nombre: nombre,
+          apellido: apellido,
+          edad: edad,
+          cantidadAcompanantes: cantidadAcompanantes,
+        });
+
+        if (response.data) {
+          console.log('Éxito: La solicitud se completó con éxito');
+        } else {
+          console.log('Error: La solicitud no se completó con éxito');
+        }      
+      } catch (error) {
+        console.error('Error al enviar la solicitud:', error);
+        // Aquí puedes manejar el error
+      }
+    } else {
+      alert('Por favor, ingrese todos los datos');
+    }
+  };
+  
+    
 
   return (
     <View>
@@ -48,7 +67,7 @@ export default function Registration() {
         onChangeText={(text) => setCantidadAcompanantes(text)}
         value={cantidadAcompanantes}
       />
-      <Button title='Guardar' onPress={handleGuardar} />
+      <Button title='Guardar' onPress={handleStore} />
     </View>
   );
 }
